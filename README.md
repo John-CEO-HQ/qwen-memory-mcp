@@ -8,6 +8,15 @@ experience, **retrieves** what matters within a limited context window, and
 
 > Hackathon track: **Track 1 - MemoryAgent**. License: MIT.
 
+## Documentation
+
+| Guide | Purpose |
+|-------|---------|
+| [docs/INSTALL.md](docs/INSTALL.md) | Full install, local run, Alibaba production deploy, troubleshooting |
+| [docs/JOHN-CEO-INTEGRATION.md](docs/JOHN-CEO-INTEGRATION.md) | How to wire this into John CEO (blueprint, not yet coded) |
+| [deploy/README.md](deploy/README.md) | Alibaba ECS / Function Compute quick reference |
+| [AGENTS.md](AGENTS.md) | Isolation contract, agent conventions, split-to-own-repo |
+
 ## Why
 
 Agents feel sharp inside a single conversation and amnesiac across sessions.
@@ -105,7 +114,8 @@ All memories are namespaced by `userId`, so one server can serve many agents.
 The only integration points with Alibaba Cloud are
 [`src/qwen.ts`](src/qwen.ts) (DashScope embeddings + chat) and
 [`src/memory/mysql-store.ts`](src/memory/mysql-store.ts) (RDS/PolarDB). See
-[`deploy/README.md`](deploy/README.md) for ECS and Function Compute deployment.
+[docs/INSTALL.md](docs/INSTALL.md) for full production setup and
+[deploy/README.md](deploy/README.md) for a short Alibaba quick reference.
 
 ## Configuration
 

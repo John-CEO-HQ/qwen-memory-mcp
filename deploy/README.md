@@ -1,5 +1,9 @@
 # Deploying Qwen Memory MCP on Alibaba Cloud
 
+For full local install, monorepo notes, and step-by-step production setup, see
+[docs/INSTALL.md](../docs/INSTALL.md). For John CEO wiring, see
+[docs/JOHN-CEO-INTEGRATION.md](../docs/JOHN-CEO-INTEGRATION.md).
+
 This server is designed to run its backend on Alibaba Cloud and call Qwen via
 Alibaba Cloud Model Studio (DashScope). Two deployment shapes are supported;
 both use the same image and env vars.

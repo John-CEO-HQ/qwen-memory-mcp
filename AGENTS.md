@@ -50,6 +50,11 @@ minimal version here** rather than importing it.
 
 ## Commands
 
+Operator docs live in [`docs/`](docs/):
+
+- [docs/INSTALL.md](docs/INSTALL.md) - install, run, deploy on Alibaba Cloud
+- [docs/JOHN-CEO-INTEGRATION.md](docs/JOHN-CEO-INTEGRATION.md) - John CEO wiring blueprint
+
 ```bash
 npm install        # install module-local dependencies
 npm run demo       # offline multi-session memory demo (no API key needed)
