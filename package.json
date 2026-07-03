@@ -2,6 +2,7 @@
   "name": "qwen-memory-mcp",
   "version": "0.1.0",
   "description": "Qwen-powered long-term memory for AI agents, exposed over the Model Context Protocol (MCP). Track 1 (MemoryAgent) hackathon submission.",
+  "author": "JHELY GLOBAL SL",
   "license": "MIT",
   "type": "module",
   "engines": {

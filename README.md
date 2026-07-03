@@ -6,7 +6,7 @@ MCP-capable agent gains durable, cross-session memory that **accumulates**
 experience, **retrieves** what matters within a limited context window, and
 **forgets** what is outdated.
 
-> Hackathon track: **Track 1 - MemoryAgent**. License: MIT.
+> Hackathon track: **Track 1 - MemoryAgent**. License: MIT. Copyright (c) 2026 JHELY GLOBAL SL.
 
 ## Documentation
 
@@ -150,3 +150,7 @@ qwen-memory-mcp/
   deploy/                 # Alibaba Cloud deployment docs
   Dockerfile
 ```
+
+## License
+
+MIT License. Copyright (c) 2026 JHELY GLOBAL SL. See [LICENSE](LICENSE).
