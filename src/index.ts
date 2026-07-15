@@ -6,12 +6,14 @@
 
 import { loadConfig } from "./config.js";
 import { createIntelligence } from "./intelligence.js";
+import { loadEnvFiles } from "./load-env.js";
 import { createStore } from "./memory/create-store.js";
 import { MemoryService } from "./memory/service.js";
 import { startHttp } from "./transports/http.js";
 import { startStdio } from "./transports/stdio.js";
 
 async function main(): Promise<void> {
+  loadEnvFiles();
   const cfg = loadConfig();
   const store = await createStore(cfg);
   const intelligence = createIntelligence(cfg);

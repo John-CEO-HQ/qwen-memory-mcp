@@ -8,14 +8,22 @@ experience, **retrieves** what matters within a limited context window, and
 
 > Hackathon track: **Track 1 - MemoryAgent**. License: MIT. Copyright (c) 2026 JHELY GLOBAL SL.
 
+**Repository:** https://github.com/John-CEO-HQ/qwen-memory-mcp
+
+This project is a **learning experiment** for the Qwen Cloud Hackathon: a standalone MCP server for agent memory on Alibaba Cloud.
+
 ## Documentation
 
 | Guide | Purpose |
 |-------|---------|
+| [docs/TESTING-GUIDE.md](docs/TESTING-GUIDE.md) | Master index: testing and hackathon checklist |
+| [docs/CREDENTIALS-AND-SETUP.md](docs/CREDENTIALS-AND-SETUP.md) | Accounts, API keys, regions, cost guardrails |
+| [docs/PHASE1-REMOTE-INTEGRATION.md](docs/PHASE1-REMOTE-INTEGRATION.md) | Live Qwen / DashScope tests from your machine |
+| [docs/PHASE2-DEPLOYMENT-TESTING.md](docs/PHASE2-DEPLOYMENT-TESTING.md) | Alibaba deploy + verify deployed URL |
 | [docs/INSTALL.md](docs/INSTALL.md) | Full install, local run, Alibaba production deploy, troubleshooting |
-| [docs/JOHN-CEO-INTEGRATION.md](docs/JOHN-CEO-INTEGRATION.md) | How to wire this into John CEO (blueprint, not yet coded) |
+| [docs/JUDGE-TESTING.md](docs/JUDGE-TESTING.md) | Instructions for hackathon judges |
 | [deploy/README.md](deploy/README.md) | Alibaba ECS / Function Compute quick reference |
-| [AGENTS.md](AGENTS.md) | Isolation contract, agent conventions, split-to-own-repo |
+| [AGENTS.md](AGENTS.md) | Agent conventions and isolation contract |
 
 ## Why
 

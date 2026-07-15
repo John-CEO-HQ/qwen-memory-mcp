@@ -21,10 +21,10 @@ interface Row {
   user_id: string;
   content: string;
   summary: string;
-  tags: string | null;
+  tags: unknown;
   kind: string;
   salience: number;
-  embedding: string | null;
+  embedding: unknown;
   created_at: number | string;
   last_accessed_at: number | string;
   access_count: number;
@@ -33,16 +33,26 @@ interface Row {
   source_session: string | null;
 }
 
+/** mysql2 may return JSON columns as strings or already-parsed values. */
+function parseJsonColumn<T>(value: unknown, fallback: T): T {
+  if (value === null || value === undefined) return fallback;
+  if (typeof value === "string") {
+    if (value.trim() === "") return fallback;
+    return JSON.parse(value) as T;
+  }
+  return value as T;
+}
+
 function toMemory(row: Row): Memory {
   return {
     id: row.id,
     userId: row.user_id,
     content: row.content,
     summary: row.summary,
-    tags: row.tags ? (JSON.parse(row.tags) as string[]) : [],
+    tags: parseJsonColumn<string[]>(row.tags, []),
     kind: row.kind as MemoryKind,
     salience: Number(row.salience),
-    embedding: row.embedding ? (JSON.parse(row.embedding) as number[]) : [],
+    embedding: parseJsonColumn<number[]>(row.embedding, []),
     createdAt: Number(row.created_at),
     lastAccessedAt: Number(row.last_accessed_at),
     accessCount: Number(row.access_count),

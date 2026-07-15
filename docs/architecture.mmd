@@ -1,0 +1,11 @@
+flowchart LR
+  agent["MCP client / AI agent"]
+  fc["Alibaba Function Compute\nHTTP trigger"]
+  service["Qwen Memory MCP\nMemoryService"]
+  qwen["Qwen Cloud\nDashScope API"]
+  rds["Alibaba RDS MySQL\nqwen_memory DB"]
+
+  agent -->|"HTTPS POST /mcp\nBearer token"| fc
+  fc --> service
+  service -->|"embeddings + chat"| qwen
+  service -->|"persist memories"| rds

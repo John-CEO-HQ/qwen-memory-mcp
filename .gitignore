@@ -9,5 +9,9 @@ dist
 .env
 .env.*
 !.env.example
+!.env.integration.example
+*.resolved.yaml
+deploy/.fc-code
+deploy/s.resolved.yaml
 
 coverage

@@ -1,77 +1,93 @@
 # Deploying Qwen Memory MCP on Alibaba Cloud
 
-For full local install, monorepo notes, and step-by-step production setup, see
-[docs/INSTALL.md](../docs/INSTALL.md). For John CEO wiring, see
-[docs/JOHN-CEO-INTEGRATION.md](../docs/JOHN-CEO-INTEGRATION.md).
+For full local install and step-by-step production setup, see
+[docs/INSTALL.md](../docs/INSTALL.md).
 
 This server is designed to run its backend on Alibaba Cloud and call Qwen via
-Alibaba Cloud Model Studio (DashScope). Two deployment shapes are supported;
-both use the same image and env vars.
+Alibaba Cloud Model Studio (DashScope).
 
-The Alibaba Cloud integration lives in two files, which double as the
-"proof of Alibaba Cloud deployment" for judging:
+Hackathon proof files:
 
-- [`src/qwen.ts`](../src/qwen.ts) - calls DashScope (Qwen embeddings + chat).
-- [`src/memory/mysql-store.ts`](../src/memory/mysql-store.ts) - persists to
-  Alibaba Cloud RDS / PolarDB for MySQL.
+- [`src/qwen.ts`](../src/qwen.ts) - DashScope (Qwen embeddings + chat).
+- [`src/memory/mysql-store.ts`](../src/memory/mysql-store.ts) - RDS / PolarDB MySQL.
 
-## Prerequisites
+## Quick deploy (RDS + Function Compute)
 
-1. An Alibaba Cloud account with Model Studio (DashScope) enabled; create an
-   API key. Set `QWEN_API_KEY`.
-2. Pick the correct DashScope region base URL in `QWEN_BASE_URL`:
-   - International (Singapore): `https://dashscope-intl.aliyuncs.com/compatible-mode/v1`
-   - Mainland China (Beijing): `https://dashscope.aliyuncs.com/compatible-mode/v1`
-3. (Recommended) An RDS or PolarDB for MySQL instance. Set `MEMORY_STORE=mysql`
-   and the `MYSQL_*` variables. The table is created automatically on boot.
+Region: **ap-southeast-1** (Singapore, international DashScope).
 
-## Option A: Elastic Compute Service (ECS) with Docker
+### 1. Bootstrap RDS (accounts, database, public dev endpoint)
 
 ```bash
-# On an ECS instance with Docker installed:
-docker build -t qwen-memory-mcp .
-docker run -d --name qwen-memory-mcp -p 8080:8080 \
-  -e QWEN_API_KEY=*** \
-  -e QWEN_BASE_URL=https://dashscope-intl.aliyuncs.com/compatible-mode/v1 \
-  -e MEMORY_STORE=mysql \
-  -e MYSQL_HOST=*** -e MYSQL_USER=*** -e MYSQL_PASSWORD=*** -e MYSQL_DATABASE=qwen_memory \
-  -e MCP_AUTH_TOKEN=$(head -c 24 /dev/urandom | base64) \
-  qwen-memory-mcp
-# MCP endpoint: http://<ecs-public-ip>:8080/mcp   (POST, Bearer token)
-# Health:       http://<ecs-public-ip>:8080/health
+cd qwen-memory-mcp
+cp .env.example .env   # fill QWEN_API_KEY + RAM keys
+./deploy/bootstrap-rds.sh
 ```
 
-Put it behind Server Load Balancer (SLB/ALB) + HTTPS for production.
+Writes secrets to `.env.rds.generated` (gitignored). Copy `MYSQL_*` and
+`MYSQL_HOST_PUBLIC` into `.env` for local dev.
 
-## Option B: Function Compute (serverless)
-
-The HTTP transport runs in **stateless** mode (a fresh MCP session per request),
-which fits Function Compute's request model.
-
-1. Create a Function Compute service and a function using a **custom container**
-   (this image) or the Node.js 20+ runtime.
-2. Set the function HTTP trigger and the same environment variables as above.
-3. Map the function to listen on `PORT` and route `/mcp` + `/health`.
-
-## Verifying
+### 2. Deploy Function Compute (custom runtime + bundled Node)
 
 ```bash
-# Health
-curl https://<host>/health
-
-# List tools over MCP (Streamable HTTP, single JSON-RPC request)
-curl -s https://<host>/mcp \
-  -H "content-type: application/json" \
-  -H "accept: application/json, text/event-stream" \
-  -H "authorization: Bearer $MCP_AUTH_TOKEN" \
-  -d '{"jsonrpc":"2.0","id":1,"method":"tools/list","params":{}}'
+./deploy/deploy-fc.sh
 ```
+
+Builds TypeScript, bundles Node + deps, creates VPC security group + FC role,
+deploys via Serverless Devs (`fc3`), writes `DEPLOYED_MCP_URL` to `.env.integration`.
+
+### 3. Verify
+
+```bash
+set -a && source .env && source .env.integration && set +a
+npm run verify:deployed
+```
+
+## Deploy artifacts
+
+| File | Purpose |
+|------|---------|
+| [`bootstrap-rds.sh`](bootstrap-rds.sh) | Idempotent RDS init (accounts, DB, public connection, IP whitelist) |
+| [`aliyun-rds-api.mjs`](aliyun-rds-api.mjs) | RDS OpenAPI helper |
+| [`deploy-fc.sh`](deploy-fc.sh) | Build + FC deploy (custom.debian10 + bundled Node) |
+| [`aliyun-infra-api.mjs`](aliyun-infra-api.mjs) | ACR/SG/FC role/Serverless Devs helpers |
+| [`render-s-yaml.mjs`](render-s-yaml.mjs) | Render `s.resolved.yaml` (gitignored) |
+| [`fc-bootstrap.sh`](fc-bootstrap.sh) | FC startup script (runs bundled `./node`) |
+| [`s.yaml`](s.yaml) | Serverless Devs template (reference) |
+
+**Live FC URL (example):** `https://qwen-memory-mcp-zvztgdreaw.ap-southeast-1.fcapp.run`
+
+FC uses the **private** RDS endpoint inside VPC; local `.env` uses the **public**
+RDS endpoint for dev.
+
+## Option A: ECS + Docker
+
+See [docs/PHASE2-DEPLOYMENT-TESTING.md](../docs/PHASE2-DEPLOYMENT-TESTING.md).
 
 ## Security notes
 
-- `QWEN_API_KEY` and `MCP_AUTH_TOKEN` are backend-only secrets. Never embed them
-  in a client or ship them to an end-user device. Inject them as Function
-  Compute / ECS environment variables (or via Alibaba Cloud KMS / Secrets
-  Manager).
-- When a host application mounts this server per user, hand each user a scoped
-  URL that carries its own `MCP_AUTH_TOKEN`; rotate tokens out-of-band.
+- Never commit `.env`, `.env.integration`, or `.env.rds.generated`.
+- RDS whitelist: your dev IP + vSwitch CIDR only (not `0.0.0.0/0`).
+- `QWEN_API_KEY` and `MCP_AUTH_TOKEN` are backend-only.
+
+## Cursor MCP: Alibaba FC tools
+
+Repo root [`.cursor/mcp.json`](../../.cursor/mcp.json) registers
+[alibabacloud-fc-mcp-server](https://github.com/aliyun/alibabacloud-fc-mcp-server).
+
+1. Add RAM keys to `qwen-memory-mcp/.env`.
+2. Run `npm install` in `qwen-memory-mcp/` (pins `alibabacloud-fc-mcp-server`).
+3. Reload MCP in Cursor (Settings > MCP).
+
+Wrapper: [`scripts/run-alibaba-fc-mcp.sh`](../scripts/run-alibaba-fc-mcp.sh)
+
+### MCP troubleshooting
+
+| Symptom | Fix |
+|---------|-----|
+| Server not listed | Confirm repo root `.cursor/mcp.json` uses **absolute** script path + `cwd` |
+| `npx` timeout on first start | Run `npm install` in `qwen-memory-mcp/` so package is local |
+| Auth errors | Check `ALIBABA_CLOUD_*` in `.env`; test: `bash scripts/run-alibaba-fc-mcp.sh` (should hang waiting for stdio - that is OK) |
+| Missing FC permissions | Root account attaches `AliyunFCFullAccess`, `AliyunDevsFullAccess`, `AliyunVPCFullAccess`, `AliyunLogFullAccess` to RAM user `qwen-memory-deploy` |
+
+RAM policies verified working for deploy: FC `GetFunction`, RDS admin, VPC/ECS SG,
+RAM role create (`qwenMemoryFcVpcRole`).

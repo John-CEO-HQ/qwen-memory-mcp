@@ -1,0 +1,39 @@
+edition: 3.0.0
+name: qwen-memory-mcp
+access: default
+
+# Reference template. deploy/deploy-fc.sh renders s.resolved.yaml with concrete values.
+# Default path: custom.debian10 + bundled Node (see fc-bootstrap.sh), VPC-attached to RDS.
+
+vars:
+  region: ap-southeast-1
+  functionName: qwen-memory-mcp
+
+resources:
+  qwen_memory_mcp:
+    component: fc3
+    props:
+      region: ${vars.region}
+      functionName: ${vars.functionName}
+      description: Qwen Memory MCP hackathon backend (HTTP + MySQL on RDS)
+      runtime: custom.debian10
+      cpu: 0.5
+      memorySize: 512
+      diskSize: 512
+      timeout: 60
+      instanceConcurrency: 1
+      customRuntimeConfig:
+        command:
+          - ./bootstrap
+        args: []
+        port: 8080
+      # code, role, vpcConfig, environmentVariables: set by deploy/render-s-yaml.mjs
+      triggers:
+        - triggerName: httpTrigger
+          triggerType: http
+          triggerConfig:
+            authType: anonymous
+            disableURLInternet: false
+            methods:
+              - GET
+              - POST

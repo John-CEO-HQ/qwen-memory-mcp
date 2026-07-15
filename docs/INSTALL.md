@@ -3,8 +3,6 @@
 Step-by-step instructions for installing, running, and deploying **Qwen Memory
 MCP** locally and on Alibaba Cloud.
 
-For wiring this server into John CEO, see [JOHN-CEO-INTEGRATION.md](JOHN-CEO-INTEGRATION.md).
-
 ---
 
 ## Prerequisites
@@ -21,33 +19,24 @@ For wiring this server into John CEO, see [JOHN-CEO-INTEGRATION.md](JOHN-CEO-INT
 
 ## Troubleshooting: folder looks empty
 
-The `qwen-memory-mcp/` directory is **not** empty. Source lives under `src/`,
-`demo/`, `test/`, and `deploy/`.
+If your editor shows missing files:
 
-If your editor or another machine shows an empty folder:
-
-1. **Unpushed commits** - The folder may exist only on a local branch. Run
-   `git ls-files qwen-memory-mcp | head` from the repo root. If empty, pull or
-   push the branch that contains the module.
-2. **Collapsed tree** - Expand `qwen-memory-mcp` in the file explorer.
-3. **No `dist/` yet** - `dist/` is gitignored. Run `npm run build` to create it.
-4. **Parent tooling ignores it** - John CEO's root `pnpm typecheck` and
-   `pnpm test` do not include this folder (intentional isolation). That does not
-   mean the files are missing.
-5. **Quick verify**:
+1. **Unpushed commits** - Pull or clone the latest from
+   https://github.com/John-CEO-HQ/qwen-memory-mcp
+2. **No `dist/` yet** - `dist/` is gitignored. Run `npm run build` to create it.
+3. **Quick verify**:
 
 ```bash
-ls qwen-memory-mcp/src
-git ls-files qwen-memory-mcp | head
+ls src
+npm test
 ```
 
 ---
 
-## Local install (standalone - recommended)
-
-Use this when the folder is its own repository or copied to a standalone path.
+## Local install
 
 ```bash
+git clone https://github.com/John-CEO-HQ/qwen-memory-mcp
 cd qwen-memory-mcp
 npm install
 cp .env.example .env    # optional: set QWEN_API_KEY for real Qwen
@@ -70,31 +59,20 @@ USE_FAKE_QWEN=                                                          # unset 
 
 ---
 
-## Local install while nested in John CEO monorepo
+## npm prefix workaround (nested checkout)
 
-The module currently lives inside the John CEO repository for convenience only.
-It has **zero code dependencies** on the parent repo.
+If this repo lives inside a larger parent project, `npm prefix` may resolve to the
+**parent** root. That can make `npm run test` run the wrong scripts.
 
-### npm prefix walk-up
-
-While nested, `npm prefix` may resolve to the **parent** repository root. That
-means `npm run test` or `npm run typecheck` can accidentally run John CEO
-scripts instead of this module's.
-
-**Workaround until the folder is split out:** use local binaries explicitly:
+Use local binaries explicitly:
 
 ```bash
-cd qwen-memory-mcp
-npm install
-
 ./node_modules/.bin/tsc -p tsconfig.json --noEmit
 ./node_modules/.bin/vitest run
 ./node_modules/.bin/tsx demo/cli.ts
-npm run build    # uses local tsc via package.json when prefix is correct
 ```
 
-**Alternative:** copy the folder outside the monorepo and run `npm install`
-there for a clean standalone experience.
+Or clone https://github.com/John-CEO-HQ/qwen-memory-mcp to a standalone path.
 
 ---
 
@@ -121,8 +99,8 @@ MEMORY_STORE=file
 
 ### HTTP (cloud and remote agents)
 
-Used for Alibaba Cloud deployment and for agents that connect over the network
-(e.g. Hermes on a John CEO VM).
+Used for Alibaba Cloud deployment and for remote MCP clients over the network
+(e.g. Hermes or other agent gateways).
 
 ```bash
 npm run build
@@ -294,8 +272,8 @@ Key groups:
 
 | Symptom | Likely cause | Fix |
 |---------|--------------|-----|
-| `npm run test` runs John CEO MySQL tests | npm prefix walked to parent repo | Use `./node_modules/.bin/vitest run` from inside `qwen-memory-mcp/` |
-| Server starts but uses fake intelligence | No `QWEN_API_KEY` set | Set key in `.env` and unset `USE_FAKE_QWEN` |
+| `npm run test` runs wrong project's tests | npm prefix walked to parent repo | Use `./node_modules/.bin/vitest run` from repo root |
+| Server starts but uses fake intelligence | Missing `QWEN_API_KEY`, or `USE_FAKE_QWEN=1` | Put key in `.env` (auto-loaded by `npm run dev`, `npm start`, and `npm run demo`). Fallback: `set -a && source .env && set +a`. Unset `USE_FAKE_QWEN` for live Qwen |
 | HTTP returns 401 | Missing or wrong `MCP_AUTH_TOKEN` | Pass `Authorization: Bearer <token>` matching server env |
 | MySQL connection fails on boot | Security group or wrong `MYSQL_*` | Allow ECS/FC -> RDS on 3306; verify credentials |
 | `dist/` missing | Not built yet | Run `npm run build` |
@@ -305,6 +283,6 @@ Key groups:
 
 ## Next steps
 
-- **Integrate with John CEO:** [JOHN-CEO-INTEGRATION.md](JOHN-CEO-INTEGRATION.md)
+- **Testing (hackathon):** [docs/TESTING-GUIDE.md](TESTING-GUIDE.md)
 - **Alibaba quick reference:** [deploy/README.md](../deploy/README.md)
 - **Module overview:** [README.md](../README.md)

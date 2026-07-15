@@ -22,6 +22,7 @@
 import type { Config } from "../src/config.js";
 import { loadConfig } from "../src/config.js";
 import { createIntelligence } from "../src/intelligence.js";
+import { loadEnvFiles } from "../src/load-env.js";
 import { FileMemoryStore } from "../src/memory/file-store.js";
 import { MemoryService } from "../src/memory/service.js";
 
@@ -33,6 +34,7 @@ function header(title: string): void {
 }
 
 async function main(): Promise<void> {
+  loadEnvFiles();
   // Tune the maintenance pass for a clear offline demonstration.
   const cfg: Config = {
     ...loadConfig(),

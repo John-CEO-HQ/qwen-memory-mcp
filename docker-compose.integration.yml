@@ -1,0 +1,22 @@
+# Local MySQL for mysql-store integration tests (not Alibaba proof).
+# Usage:
+#   docker compose -f docker-compose.integration.yml up -d
+#   export MYSQL_HOST=127.0.0.1 MYSQL_PORT=3306 \
+#     MYSQL_USER=qwen_memory MYSQL_PASSWORD=qwen_memory MYSQL_DATABASE=qwen_memory
+#   npm run test:integration
+
+services:
+  mysql:
+    image: mysql:8.0
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: qwen_memory
+      MYSQL_USER: qwen_memory
+      MYSQL_PASSWORD: qwen_memory
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-uroot", "-proot"]
+      interval: 5s
+      timeout: 5s
+      retries: 10

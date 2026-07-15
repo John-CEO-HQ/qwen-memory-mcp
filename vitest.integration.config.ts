@@ -2,8 +2,8 @@ import { defineConfig } from "vitest/config";
 
 export default defineConfig({
   test: {
-    include: ["test/**/*.test.ts"],
-    exclude: ["test/**/*.integration.test.ts"],
+    include: ["test/**/*.integration.test.ts"],
+    setupFiles: ["test/helpers/setup-integration.ts"],
     environment: "node",
     pool: "forks",
     poolOptions: {
@@ -11,5 +11,7 @@ export default defineConfig({
         singleFork: true,
       },
     },
+    testTimeout: 60_000,
+    hookTimeout: 60_000,
   },
 });
