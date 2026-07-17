@@ -18,7 +18,7 @@ This project is a **learning experiment** for the Qwen Cloud Hackathon: a standa
 
 | Guide | Purpose |
 |-------|---------|
-| [docs/TESTING-GUIDE.md](docs/TESTING-GUIDE.md) | Master index: testing and hackathon checklist |
+| [docs/TESTING-GUIDE.md](docs/TESTING-GUIDE.md) | Master index: testing phases and pass criteria |
 | [docs/CREDENTIALS-AND-SETUP.md](docs/CREDENTIALS-AND-SETUP.md) | Accounts, API keys, regions, cost guardrails |
 | [docs/PHASE1-REMOTE-INTEGRATION.md](docs/PHASE1-REMOTE-INTEGRATION.md) | Live Qwen / DashScope tests from your machine |
 | [docs/PHASE2-DEPLOYMENT-TESTING.md](docs/PHASE2-DEPLOYMENT-TESTING.md) | Alibaba deploy + verify deployed URL |
