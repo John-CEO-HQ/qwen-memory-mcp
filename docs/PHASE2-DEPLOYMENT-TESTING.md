@@ -228,6 +228,8 @@ Valid for engineering confidence only - **not** a substitute for RDS in submissi
 
 Upload to YouTube/Vimeo public; link in Devpost.
 
+**Published demo:** https://www.youtube.com/watch?v=ZxXKvVY6iMQ
+
 ---
 
 ## Next steps

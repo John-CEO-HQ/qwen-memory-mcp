@@ -5,9 +5,9 @@ integration and Alibaba Cloud deployment verification.
 
 All commands run from the **repository root** after `npm install`.
 
-**Hackathon:** Track 1 - MemoryAgent. Submission deadline **Jul 20, 2026**.
-
 **Repository:** https://github.com/John-CEO-HQ/qwen-memory-mcp
+
+**Hackathon judges:** see [JUDGE-TESTING.md](JUDGE-TESTING.md).
 
 ---
 
@@ -76,58 +76,6 @@ is safe to run without keys (everything skips).
 
 ---
 
-## Suggested timeline (6 days to deadline)
-
-| Day | Focus |
-|-----|-------|
-| 1 | Phase 0 + Phase 1: accounts, `.env`, `verify:qwen`, `test:integration` |
-| 2-3 | Phase 2 setup: RDS, ECS, Docker deploy, HTTPS |
-| 4 | Phase 2 verify: `verify:deployed`, restart test, record demo video |
-| 5 | Submission: public repo, architecture diagram, Devpost form |
-| 6 | Buffer / optional blog post prize |
-
----
-
-## Hackathon submission checklist
-
-Use this when filling out [Devpost](https://qwencloud-hackathon.devpost.com/).
-
-| Requirement | Your artifact |
-|-------------|---------------|
-| Track | **Track 1: MemoryAgent** |
-| Public MIT repo | https://github.com/John-CEO-HQ/qwen-memory-mcp |
-| Proof of Alibaba Cloud | Link [`src/qwen.ts`](../src/qwen.ts) + [`src/memory/mysql-store.ts`](../src/memory/mysql-store.ts) + deployed URL |
-| Architecture diagram | [`docs/architecture.png`](architecture.png) (source: [`docs/architecture.mmd`](architecture.mmd)) |
-| Judge testing instructions | [`docs/JUDGE-TESTING.md`](JUDGE-TESTING.md) |
-| Remaining submission tasks | [`docs/HACKATHON-REMAINING-TASKS.md`](HACKATHON-REMAINING-TASKS.md) |
-| Blog post (bonus prize) | `https://john.ceo/articles/building-persistent-memory-with-qwen` |
-| Working demo | ~3 min video: Phase 2 curls or agent using MCP tools |
-| Test access | Public HTTPS URL + Bearer token in testing instructions |
-| Description | Features: write, search, recall, forget; Qwen salience; RDS persistence |
-
-### Judge testing instructions
-
-Copy from [`JUDGE-TESTING.md`](JUDGE-TESTING.md) into Devpost field 16.
-
-```text
-Repository: https://github.com/John-CEO-HQ/qwen-memory-mcp
-Live demo: https://qwen-memory-mcp-zvztgdreaw.ap-southeast-1.fcapp.run/health
-Blog post: https://john.ceo/articles/building-persistent-memory-with-qwen
-
-Auth: Authorization: Bearer <from Devpost field 16>
-
-Quick test:
-  export BASE_URL=https://qwen-memory-mcp-zvztgdreaw.ap-southeast-1.fcapp.run
-  export MCP_AUTH_TOKEN='<from Devpost>'
-  ./scripts/smoke-mcp-http.sh
-
-Or: npm run verify:deployed (DEPLOYED_MCP_URL + MCP_AUTH_TOKEN in .env.integration)
-```
-
-Rotate `MCP_AUTH_TOKEN` after the judging period.
-
----
-
 ## Troubleshooting
 
 | Symptom | See |
@@ -147,4 +95,3 @@ Rotate `MCP_AUTH_TOKEN` after the judging period.
 - [PHASE2-DEPLOYMENT-TESTING.md](PHASE2-DEPLOYMENT-TESTING.md)
 - [INSTALL.md](INSTALL.md)
 - [JUDGE-TESTING.md](JUDGE-TESTING.md)
-- [HACKATHON-REMAINING-TASKS.md](HACKATHON-REMAINING-TASKS.md)

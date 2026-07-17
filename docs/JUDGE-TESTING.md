@@ -11,6 +11,7 @@ English instructions for hackathon judges and Devpost "Testing instructions" fie
 | MCP endpoint | `POST /mcp` (Bearer token required) |
 | Auth header | `Authorization: Bearer <MCP_AUTH_TOKEN>` |
 | `MCP_AUTH_TOKEN` | See Devpost submission testing instructions (field 16) |
+| Demo video | https://www.youtube.com/watch?v=ZxXKvVY6iMQ |
 
 The sponsor provides `MCP_AUTH_TOKEN` in Devpost testing instructions (not in this repo). The value may contain `/`; always quote it in shell commands. First request after idle may take 10-20 seconds (Function Compute cold start).
 

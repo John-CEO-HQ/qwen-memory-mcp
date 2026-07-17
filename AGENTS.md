@@ -32,7 +32,8 @@ from or depend on any private monorepo.
 
 Operator docs live in [`docs/`](docs/):
 
-- [docs/TESTING-GUIDE.md](docs/TESTING-GUIDE.md) - master testing index (hackathon)
+- [docs/TESTING-GUIDE.md](docs/TESTING-GUIDE.md) - master testing index
+- [docs/JUDGE-TESTING.md](docs/JUDGE-TESTING.md) - hackathon judge instructions
 - [docs/CREDENTIALS-AND-SETUP.md](docs/CREDENTIALS-AND-SETUP.md) - accounts and API keys
 - [docs/PHASE1-REMOTE-INTEGRATION.md](docs/PHASE1-REMOTE-INTEGRATION.md) - live Qwen tests
 - [docs/PHASE2-DEPLOYMENT-TESTING.md](docs/PHASE2-DEPLOYMENT-TESTING.md) - Alibaba deploy verify
