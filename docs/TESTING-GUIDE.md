@@ -101,7 +101,7 @@ Use this when filling out [Devpost](https://qwencloud-hackathon.devpost.com/).
 | Judge testing instructions | [`docs/JUDGE-TESTING.md`](JUDGE-TESTING.md) |
 | Remaining submission tasks | [`docs/HACKATHON-REMAINING-TASKS.md`](HACKATHON-REMAINING-TASKS.md) |
 | Blog post (bonus prize) | `https://john.ceo/articles/building-persistent-memory-with-qwen` |
-| Working demo | ~3 min video: Phase 2 curls or agent using MCP tools |
+| Working demo | https://www.youtube.com/watch?v=ZxXKvVY6iMQ (~2:31; architecture, Alibaba, live MCP verify) |
 | Test access | Public HTTPS URL + Bearer token in testing instructions |
 | Description | Features: write, search, recall, forget; Qwen salience; RDS persistence |
 
@@ -111,6 +111,7 @@ Copy from [`JUDGE-TESTING.md`](JUDGE-TESTING.md) into Devpost field 16.
 
 ```text
 Repository: https://github.com/John-CEO-HQ/qwen-memory-mcp
+Demo video: https://www.youtube.com/watch?v=ZxXKvVY6iMQ
 Live demo: https://qwen-memory-mcp-zvztgdreaw.ap-southeast-1.fcapp.run/health
 Blog post: https://john.ceo/articles/building-persistent-memory-with-qwen
 

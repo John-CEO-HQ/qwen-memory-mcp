@@ -10,6 +10,8 @@ experience, **retrieves** what matters within a limited context window, and
 
 **Repository:** https://github.com/John-CEO-HQ/qwen-memory-mcp
 
+**Demo video:** https://youtu.be/ZxXKvVY6iMQ
+
 This project is a **learning experiment** for the Qwen Cloud Hackathon: a standalone MCP server for agent memory on Alibaba Cloud.
 
 ## Documentation

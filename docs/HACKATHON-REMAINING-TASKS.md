@@ -12,6 +12,7 @@ Technical deploy is done. Complete these before **Jul 20, 2026 2:00pm PDT**.
 - [x] [`docs/architecture.png`](architecture.png) for Devpost image upload (regenerate: `npx @mermaid-js/mermaid-cli -p docs/puppeteer-config.json -i docs/architecture.mmd -o docs/architecture.png`)
 - [x] Smoke script fixed for SSE MCP responses
 - [x] Blog article at `/articles/building-persistent-memory-with-qwen` (john.ceo)
+- [x] Demo video on YouTube: https://youtu.be/ZxXKvVY6iMQ
 - [x] Public repo URL: https://github.com/John-CEO-HQ/qwen-memory-mcp
 
 ---
@@ -34,9 +35,11 @@ On GitHub: Public, MIT license in About, add topics `mcp`, `qwen`, `memory-agent
 
 ## 2. Demo video (under 3 minutes)
 
-Record and upload to **YouTube or Vimeo** (public).
+**Done.** Public YouTube: https://www.youtube.com/watch?v=ZxXKvVY6iMQ (https://youtu.be/ZxXKvVY6iMQ)
 
-Suggested script:
+Paste into Devpost field 6. Local source: `~/Pictures/qwen-hackathon-video/john-movie-subtitled.mp4` (render via `scripts/render-john-movie.sh` in the John CEO monorepo).
+
+Original planning script (reference):
 
 | Time | Content |
 |------|---------|
@@ -71,7 +74,7 @@ Screen-record this segment for the video or attach a screenshot to Devpost.
 2. Track: **Track 1 - MemoryAgent**
 3. Fill in:
    - Public repo URL: https://github.com/John-CEO-HQ/qwen-memory-mcp
-   - Video URL (step 2)
+   - Video URL: https://www.youtube.com/watch?v=ZxXKvVY6iMQ
    - Architecture diagram: upload `docs/architecture.png`
    - Testing instructions: copy from [`JUDGE-TESTING.md`](JUDGE-TESTING.md); paste `MCP_AUTH_TOKEN` into Devpost field 16 only
    - Alibaba proof links: `src/qwen.ts`, `src/memory/mysql-store.ts`
@@ -112,4 +115,5 @@ Article lives on john.ceo:
 | Architecture PNG | `docs/architecture.png` |
 | Live URL | `https://qwen-memory-mcp-zvztgdreaw.ap-southeast-1.fcapp.run` |
 | Verify command | `npm run verify:deployed` |
+| Demo video | https://youtu.be/ZxXKvVY6iMQ |
 | Blog article | `https://john.ceo/articles/building-persistent-memory-with-qwen` |
